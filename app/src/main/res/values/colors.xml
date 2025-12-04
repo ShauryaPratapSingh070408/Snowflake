@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Snowflake Brand Colors -->
+    <color name="snowflake_primary">#64B5F6</color>
+    <color name="snowflake_primary_dark">#42A5F5</color>
+    <color name="snowflake_accent">#81D4FA</color>
+    <color name="snowflake_background">#F5F9FC</color>
+    <color name="snowflake_surface">#FFFFFF</color>
+    
+    <!-- Dark Theme Colors -->
+    <color name="snowflake_dark_background">#121212</color>
+    <color name="snowflake_dark_surface">#1E1E1E</color>
+    
+    <!-- Semantic Colors -->
+    <color name="frost_vision_blue">#4FC3F7</color>
+    <color name="error_red">#F44336</color>
+    <color name="success_green">#4CAF50</color>
+    <color name="warning_orange">#FF9800</color>
+</resources>
