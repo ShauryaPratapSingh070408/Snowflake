@@ -34,16 +34,16 @@ class ChatViewModel @Inject constructor(
         if (text.isBlank() || _isLoading.value) return
 
         viewModelScope.launch {
-            // Add user message
-            val userMessage = ChatMessage(
-                content = text,
-                isFromUser = true
-            )
-            _messages.value = _messages.value + userMessage
-            _inputText.value = ""
-            _isLoading.value = true
-
             try {
+                // Add user message
+                val userMessage = ChatMessage(
+                    content = text,
+                    isFromUser = true
+                )
+                _messages.value = _messages.value + userMessage
+                _inputText.value = ""
+                _isLoading.value = true
+
                 // Get AI response from Gemini
                 val response = geminiRepository.sendMessage(text)
                 val aiMessage = ChatMessage(
@@ -53,7 +53,7 @@ class ChatViewModel @Inject constructor(
                 _messages.value = _messages.value + aiMessage
             } catch (e: Exception) {
                 val errorMessage = ChatMessage(
-                    content = "Sorry, I encountered an error: ${e.message ?: "Unknown error"}",
+                    content = "⚠️ Sorry, an error occurred: ${e.message ?: "Unknown error"}. Please try again.",
                     isFromUser = false
                 )
                 _messages.value = _messages.value + errorMessage
