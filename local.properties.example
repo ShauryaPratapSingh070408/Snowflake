@@ -1,0 +1,18 @@
+# Copy this file to 'local.properties' and add your actual values
+# This file should be in .gitignore and never committed
+
+## Android SDK Location
+# On Mac:
+# sdk.dir=/Users/YOUR_USERNAME/Library/Android/sdk
+
+# On Windows:
+# sdk.dir=C:\\Users\\YOUR_USERNAME\\AppData\\Local\\Android\\Sdk
+
+# On Linux:
+# sdk.dir=/home/YOUR_USERNAME/Android/Sdk
+
+sdk.dir=/path/to/Android/Sdk
+
+## Gemini API Key
+# Get your free API key from: https://makersuite.google.com/app/apikey
+GEMINI_API_KEY=your_api_key_here
