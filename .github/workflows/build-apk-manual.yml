@@ -1,0 +1,87 @@
+name: Build APK (Manual)
+
+# This workflow can be triggered manually to build APK instantly
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build Type'
+        required: true
+        default: 'debug'
+        type: choice
+        options:
+          - debug
+          - release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build Debug APK
+      if: ${{ github.event.inputs.build_type == 'debug' }}
+      run: ./gradlew assembleDebug --stacktrace
+
+    - name: Build Release APK
+      if: ${{ github.event.inputs.build_type == 'release' }}
+      run: ./gradlew assembleRelease --stacktrace
+
+    - name: Upload Debug APK
+      if: ${{ github.event.inputs.build_type == 'debug' }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: snowflake-debug-apk
+        path: app/build/outputs/apk/debug/app-debug.apk
+
+    - name: Upload Release APK
+      if: ${{ github.event.inputs.build_type == 'release' }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: snowflake-release-apk
+        path: app/build/outputs/apk/release/app-release.apk
+
+    - name: Create Release with APK
+      if: ${{ github.event.inputs.build_type == 'release' }}
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v1.0.0-build-${{ github.run_number }}
+        name: Snowflake v1.0.0 Build ${{ github.run_number }}
+        body: |
+          ## 🌨️ Snowflake AI - Android APK
+          
+          **Build**: ${{ github.run_number }}
+          **Date**: ${{ github.event.head_commit.timestamp }}
+          
+          ### 📦 Installation
+          1. Download `app-release.apk` below
+          2. Transfer to your Android device
+          3. Open and install
+          4. Enable permissions when prompted
+          
+          ### ⚠️ First Time Setup
+          - Get Gemini API key from: https://makersuite.google.com/app/apikey
+          - Add it in app Settings after installation
+          
+          ### 📱 Requirements
+          - Android 8.0 (API 26) or higher
+          - Camera and microphone
+          - Internet connection
+        files: |
+          app/build/outputs/apk/release/app-release.apk
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
