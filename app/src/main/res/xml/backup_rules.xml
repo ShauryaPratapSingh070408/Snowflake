@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <full-backup-content>
     <include domain="sharedpref" path="."/>
-    <exclude domain="sharedpref" path="api_keys.xml"/>
-    <exclude domain="database" path="snowflake_memory_db"/>
+    <include domain="database" path="."/>
+    <include domain="file" path="."/>
 </full-backup-content>

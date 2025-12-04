@@ -2,10 +2,7 @@
 <data-extraction-rules>
     <cloud-backup>
         <include domain="sharedpref" path="."/>
-        <exclude domain="sharedpref" path="api_keys.xml"/>
+        <include domain="database" path="."/>
+        <include domain="file" path="."/>
     </cloud-backup>
-    <device-transfer>
-        <include domain="sharedpref" path="."/>
-        <exclude domain="sharedpref" path="api_keys.xml"/>
-    </device-transfer>
 </data-extraction-rules>
