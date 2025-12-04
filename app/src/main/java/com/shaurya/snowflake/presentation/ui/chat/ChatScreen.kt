@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
-import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(
+    onSettingsClick: () -> Unit,
     viewModel: ChatViewModel = hiltViewModel()
 ) {
     val messages by viewModel.messages.collectAsState()
@@ -47,6 +48,15 @@ fun ChatScreen(
                         fontWeight = FontWeight.Bold
                     )
                 },
+                actions = {
+                    IconButton(onClick = onSettingsClick) {
+                        Icon(
+                            Icons.Default.Settings,
+                            contentDescription = "Settings",
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -70,7 +80,7 @@ fun ChatScreen(
             ) {
                 if (messages.isEmpty()) {
                     item {
-                        WelcomeMessage()
+                        WelcomeMessage(onSettingsClick)
                     }
                 }
 
@@ -131,7 +141,7 @@ fun ChatScreen(
 }
 
 @Composable
-fun WelcomeMessage() {
+fun WelcomeMessage(onSettingsClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -140,7 +150,7 @@ fun WelcomeMessage() {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            "❄️",
+            "\u2744\ufe0f",
             style = MaterialTheme.typography.displayLarge
         )
         Text(
@@ -150,10 +160,18 @@ fun WelcomeMessage() {
             color = MaterialTheme.colorScheme.primary
         )
         Text(
-            "Type your question below to get started",
+            "Powered by Google Gemini",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        Button(onClick = onSettingsClick) {
+            Icon(Icons.Default.Settings, null, modifier = Modifier.size(18.dp))
+            Spacer(Modifier.width(8.dp))
+            Text("Add API Key to Start")
+        }
     }
 }
 

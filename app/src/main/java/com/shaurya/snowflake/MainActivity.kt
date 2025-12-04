@@ -6,8 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.shaurya.snowflake.presentation.ui.chat.ChatScreen
+import com.shaurya.snowflake.presentation.ui.settings.SettingsScreen
 import com.shaurya.snowflake.presentation.ui.theme.SnowflakeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,7 +23,17 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ChatScreen()
+                    var showSettings by remember { mutableStateOf(false) }
+                    
+                    if (showSettings) {
+                        SettingsScreen(
+                            onBackClick = { showSettings = false }
+                        )
+                    } else {
+                        ChatScreen(
+                            onSettingsClick = { showSettings = true }
+                        )
+                    }
                 }
             }
         }
