@@ -13,6 +13,10 @@
 
 sdk.dir=/path/to/Android/Sdk
 
-## Gemini API Key
+## Gemini API Key (REQUIRED for Phase 1)
 # Get your free API key from: https://makersuite.google.com/app/apikey
-GEMINI_API_KEY=your_api_key_here
+# This is needed for the AI chat feature to work
+GEMINI_API_KEY=your_actual_gemini_api_key_here
+
+# Example (DO NOT use this, get your own):
+# GEMINI_API_KEY=AIzaSyA1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q
