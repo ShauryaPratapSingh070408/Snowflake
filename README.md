@@ -12,6 +12,37 @@ Snowflake is a next-generation AI assistant that brings **real-time visual intel
 
 ---
 
+## 📱 Download APK - Ready to Install!
+
+### 🚀 Quick Install (For Users)
+
+**Want to use Snowflake right now? No coding needed!**
+
+#### Option 1: Download Pre-Built APK (When Available)
+
+📥 **[Download Latest APK](https://github.com/ShauryaPratapSingh070408/Snowflake/releases/latest)**
+
+1. Click the link above on your Android phone
+2. Download `app-release.apk`
+3. Open and install
+4. Done! 🎉
+
+#### Option 2: Build APK Instantly (5-10 minutes)
+
+**No Android Studio needed! GitHub builds it for you:**
+
+1. **Go to Actions:** [Click Here](https://github.com/ShauryaPratapSingh070408/Snowflake/actions/workflows/build-apk-manual.yml)
+2. **Click "Run workflow"** (green button, top right)
+3. **Select "debug" or "release"**
+4. **Click "Run workflow"** again
+5. **Wait 5-10 minutes** for build to complete ⏱️
+6. **Download APK** from "Artifacts" section
+7. **Transfer to phone and install!**
+
+📖 **Detailed Instructions:** [DOWNLOAD_APK.md](DOWNLOAD_APK.md)
+
+---
+
 ## ✨ Key Features
 
 ### 👁️ Frost Vision™ - Real-Time Visual AI
@@ -45,25 +76,15 @@ Snowflake is a next-generation AI assistant that brings **real-time visual intel
 
 ---
 
-## 🚀 Quick Start
+## 🔧 Build from Source (For Developers)
 
-### 📲 Download APK
-
-Get the latest release from:
-
-**[Download Snowflake APK](https://github.com/ShauryaPratapSingh070408/Snowflake/releases/latest)**
-
-Or build from source using the instructions below.
-
-### 🔧 Build from Source
-
-#### Prerequisites
+### Prerequisites
 - Android Studio Hedgehog (2023.1.1) or later
 - JDK 17 or higher
 - Android SDK 26+ (Android 8.0 Oreo)
 - Google Gemini API Key ([Get free key](https://makersuite.google.com/app/apikey))
 
-#### Installation Steps
+### Installation Steps
 
 1. **Clone the repository**
 ```bash
