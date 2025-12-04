@@ -2,7 +2,9 @@ package com.shaurya.snowflake.data.repository
 
 import com.google.ai.client.generativeai.GenerativeModel
 import com.shaurya.snowflake.data.local.PreferencesManager
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -11,34 +13,41 @@ class GeminiRepository @Inject constructor(
     private val preferencesManager: PreferencesManager
 ) {
     private suspend fun getModel(): GenerativeModel? {
-        val apiKey = preferencesManager.apiKey.first()
-        return if (!apiKey.isNullOrEmpty()) {
-            GenerativeModel(
-                modelName = "gemini-1.5-flash",
-                apiKey = apiKey
-            )
-        } else {
-            null
+        return withContext(Dispatchers.IO) {
+            val apiKey = preferencesManager.apiKey.first()
+            if (!apiKey.isNullOrEmpty()) {
+                GenerativeModel(
+                    modelName = "gemini-1.5-flash",
+                    apiKey = apiKey
+                )
+            } else {
+                null
+            }
         }
     }
 
-    suspend fun sendMessage(message: String): String {
-        return try {
+    suspend fun sendMessage(message: String): String = withContext(Dispatchers.IO) {
+        try {
             val model = getModel()
             if (model == null) {
-                return "\u26a0\ufe0f Please add your Gemini API key in Settings first!"
+                return@withContext "⚠️ Please add your Gemini API key in Settings first!"
             }
             
             val response = model.generateContent(message)
             response.text ?: "I couldn't generate a response. Please try again."
         } catch (e: Exception) {
             when {
-                e.message?.contains("API key") == true -> 
-                    "\u26a0\ufe0f Invalid API key. Please check your API key in Settings."
-                e.message?.contains("quota") == true -> 
-                    "\u26a0\ufe0f API quota exceeded. Please wait or check your Google AI Studio quota."
+                e.message?.contains("API key", ignoreCase = true) == true -> 
+                    "⚠️ Invalid API key. Please check your API key in Settings."
+                e.message?.contains("quota", ignoreCase = true) == true -> 
+                    "⚠️ API quota exceeded. Please wait or check your Google AI Studio quota."
+                e.message?.contains("network", ignoreCase = true) == true ||
+                e.message?.contains("connect", ignoreCase = true) == true ->
+                    "⚠️ Network error. Please check your internet connection."
+                e.message?.contains("SAFETY", ignoreCase = true) == true ->
+                    "⚠️ Content blocked by safety filters. Try rephrasing your question."
                 else -> 
-                    "Error: ${e.localizedMessage ?: "Unknown error occurred"}"
+                    "Error: ${e.localizedMessage ?: "Unknown error occurred. Please try again."}"
             }
         }
     }
@@ -46,8 +55,8 @@ class GeminiRepository @Inject constructor(
     suspend fun sendMessageWithHistory(
         message: String,
         history: List<Pair<String, String>>
-    ): String {
-        return try {
+    ): String = withContext(Dispatchers.IO) {
+        try {
             sendMessage(message)
         } catch (e: Exception) {
             "Error: ${e.localizedMessage ?: "Unknown error occurred"}"
