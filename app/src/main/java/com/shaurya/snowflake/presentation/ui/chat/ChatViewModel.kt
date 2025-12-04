@@ -3,7 +3,6 @@ package com.shaurya.snowflake.presentation.ui.chat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shaurya.snowflake.data.repository.GeminiRepository
-import com.shaurya.snowflake.service.voice.VoiceRecognitionService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -11,8 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChatViewModel @Inject constructor(
-    private val geminiRepository: GeminiRepository,
-    private val voiceService: VoiceRecognitionService
+    private val geminiRepository: GeminiRepository
 ) : ViewModel() {
 
     private val _messages = MutableStateFlow<List<ChatMessage>>(emptyList())
@@ -26,25 +24,6 @@ class ChatViewModel @Inject constructor(
 
     private val _isListening = MutableStateFlow(false)
     val isListening: StateFlow<Boolean> = _isListening.asStateFlow()
-
-    init {
-        // Listen for wake word detection
-        viewModelScope.launch {
-            voiceService.recognizedText.collect { text ->
-                if (text.isNotBlank()) {
-                    if (text.contains("hey snowflake", ignoreCase = true)) {
-                        // Wake word detected - start listening for command
-                        handleWakeWordDetected()
-                    } else if (_isListening.value) {
-                        // Process voice command
-                        _inputText.value = text
-                        sendMessage()
-                        stopListening()
-                    }
-                }
-            }
-        }
-    }
 
     fun updateInputText(text: String) {
         _inputText.value = text
@@ -85,37 +64,7 @@ class ChatViewModel @Inject constructor(
     }
 
     fun toggleListening() {
-        if (_isListening.value) {
-            stopListening()
-        } else {
-            startListening()
-        }
-    }
-
-    private fun startListening() {
-        _isListening.value = true
-        voiceService.startListening()
-    }
-
-    private fun stopListening() {
-        _isListening.value = false
-        voiceService.stopListening()
-    }
-
-    private fun handleWakeWordDetected() {
-        // Wake word detected - provide visual feedback
-        viewModelScope.launch {
-            val wakeMessage = ChatMessage(
-                content = "👋 Yes, I'm listening!",
-                isFromUser = false
-            )
-            _messages.value = _messages.value + wakeMessage
-            startListening() // Start listening for actual command
-        }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        stopListening()
+        // Voice feature coming in Phase 1.1
+        _isListening.value = !_isListening.value
     }
 }
