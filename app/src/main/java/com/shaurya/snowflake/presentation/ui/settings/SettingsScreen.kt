@@ -26,6 +26,7 @@ fun SettingsScreen(
     val apiKey by viewModel.apiKey.collectAsState()
     val isSaving by viewModel.isSaving.collectAsState()
     val saveSuccess by viewModel.saveSuccess.collectAsState()
+    val errorMessage by viewModel.errorMessage.collectAsState()
     
     var apiKeyInput by remember { mutableStateOf("") }
     var showApiKey by remember { mutableStateOf(false) }
@@ -151,6 +152,29 @@ fun SettingsScreen(
                     Spacer(Modifier.width(8.dp))
                 }
                 Text(if (isSaving) "Saving..." else "Save API Key")
+            }
+
+            // Error Message
+            errorMessage?.let { error ->
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.errorContainer
+                    )
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            "❌ $error",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onErrorContainer
+                        )
+                    }
+                }
             }
 
             // Success Message
