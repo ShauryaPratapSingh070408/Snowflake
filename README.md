@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="snowflake_logo.png" alt="Snowflake AI Logo" width="200"/>
+</div>
+
 # 🌨️ Snowflake AI
 
 **Advanced Android AI Assistant with Frost Vision™**
