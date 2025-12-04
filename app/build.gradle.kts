@@ -21,14 +21,18 @@ android {
             useSupportLibrary = true
         }
 
-        // Load API key from local.properties if available
-        val properties = org.jetbrains.kotlin.konan.properties.Properties()
-        val localPropertiesFile = rootProject.file("local.properties")
-        if (localPropertiesFile.exists()) {
-            properties.load(localPropertiesFile.inputStream())
+        // Load API key from environment variable (GitHub Actions) or local.properties
+        val geminiApiKey = System.getenv("GEMINI_API_KEY") ?: run {
+            val properties = org.jetbrains.kotlin.konan.properties.Properties()
+            val localPropertiesFile = rootProject.file("local.properties")
+            if (localPropertiesFile.exists()) {
+                properties.load(localPropertiesFile.inputStream())
+                properties.getProperty("GEMINI_API_KEY", "")
+            } else {
+                ""
+            }
         }
-        buildConfigField("String", "GEMINI_API_KEY", 
-            "\"${properties.getProperty("GEMINI_API_KEY", "")}\"")
+        buildConfigField("String", "GEMINI_API_KEY", "\"$geminiApiKey\"")
     }
 
     buildTypes {
