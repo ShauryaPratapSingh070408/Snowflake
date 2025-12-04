@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Snowflake Theme -->
+    <style name="Theme.Snowflake" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/snowflake_primary</item>
+    </style>
+</resources>
