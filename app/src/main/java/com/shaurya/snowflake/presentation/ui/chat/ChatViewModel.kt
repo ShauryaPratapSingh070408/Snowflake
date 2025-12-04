@@ -31,14 +31,16 @@ class ChatViewModel @Inject constructor(
         // Listen for wake word detection
         viewModelScope.launch {
             voiceService.recognizedText.collect { text ->
-                if (text.contains("hey snowflake", ignoreCase = true)) {
-                    // Wake word detected - start listening for command
-                    handleWakeWordDetected()
-                } else if (_isListening.value && text.isNotBlank()) {
-                    // Process voice command
-                    _inputText.value = text
-                    sendMessage()
-                    stopListening()
+                if (text.isNotBlank()) {
+                    if (text.contains("hey snowflake", ignoreCase = true)) {
+                        // Wake word detected - start listening for command
+                        handleWakeWordDetected()
+                    } else if (_isListening.value) {
+                        // Process voice command
+                        _inputText.value = text
+                        sendMessage()
+                        stopListening()
+                    }
                 }
             }
         }
@@ -72,7 +74,7 @@ class ChatViewModel @Inject constructor(
                 _messages.value = _messages.value + aiMessage
             } catch (e: Exception) {
                 val errorMessage = ChatMessage(
-                    content = "Sorry, I encountered an error: ${e.message}",
+                    content = "Sorry, I encountered an error: ${e.message ?: "Unknown error"}",
                     isFromUser = false
                 )
                 _messages.value = _messages.value + errorMessage
@@ -101,7 +103,7 @@ class ChatViewModel @Inject constructor(
     }
 
     private fun handleWakeWordDetected() {
-        // Wake word detected - provide audio/visual feedback
+        // Wake word detected - provide visual feedback
         viewModelScope.launch {
             val wakeMessage = ChatMessage(
                 content = "👋 Yes, I'm listening!",
