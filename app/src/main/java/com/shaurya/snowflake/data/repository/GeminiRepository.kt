@@ -14,13 +14,17 @@ class GeminiRepository @Inject constructor(
 ) {
     private suspend fun getModel(): GenerativeModel? {
         return withContext(Dispatchers.IO) {
-            val apiKey = preferencesManager.apiKey.first()
-            if (!apiKey.isNullOrEmpty()) {
-                GenerativeModel(
-                    modelName = "gemini-1.5-flash",
-                    apiKey = apiKey
-                )
-            } else {
+            try {
+                val apiKey = preferencesManager.apiKey.first()
+                if (!apiKey.isNullOrEmpty() && apiKey.startsWith("AIza")) {
+                    GenerativeModel(
+                        modelName = "gemini-1.5-flash",
+                        apiKey = apiKey
+                    )
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
                 null
             }
         }
@@ -28,24 +32,39 @@ class GeminiRepository @Inject constructor(
 
     suspend fun sendMessage(message: String): String = withContext(Dispatchers.IO) {
         try {
+            if (message.trim().isEmpty()) {
+                return@withContext "Please enter a message"
+            }
+
             val model = getModel()
             if (model == null) {
-                return@withContext "⚠️ Please add your Gemini API key in Settings first!"
+                return@withContext "Please add your Gemini API key in Settings first!"
+            }
+
+            val limitedMessage = message.take(5000)
+            
+            val response = try {
+                model.generateContent(limitedMessage)
+            } catch (e: Exception) {
+                return@withContext "API Error: ${e.localizedMessage ?: "Unknown error"}"
             }
             
-            val response = model.generateContent(message)
-            response.text ?: "I couldn't generate a response. Please try again."
+            response.text?.trim() ?: "I couldn't generate a response. Please try again."
+            
         } catch (e: Exception) {
             when {
                 e.message?.contains("API key", ignoreCase = true) == true -> 
-                    "⚠️ Invalid API key. Please check your API key in Settings."
+                    "Invalid API key. Please check your API key in Settings."
                 e.message?.contains("quota", ignoreCase = true) == true -> 
-                    "⚠️ API quota exceeded. Please wait or check your Google AI Studio quota."
-                e.message?.contains("network", ignoreCase = true) == true ||
+                    "API quota exceeded. Please wait or check your Google AI Studio quota."
+                e.message?.contains("network", ignoreCase = true) == true ->
+                    "Network error. Please check your internet connection."
                 e.message?.contains("connect", ignoreCase = true) == true ->
-                    "⚠️ Network error. Please check your internet connection."
+                    "Connection error. Please check your internet."
                 e.message?.contains("SAFETY", ignoreCase = true) == true ->
-                    "⚠️ Content blocked by safety filters. Try rephrasing your question."
+                    "Content blocked by safety filters. Try rephrasing your question."
+                e.message?.contains("timeout", ignoreCase = true) == true ->
+                    "Request timed out. Please try again."
                 else -> 
                     "Error: ${e.localizedMessage ?: "Unknown error occurred. Please try again."}"
             }
