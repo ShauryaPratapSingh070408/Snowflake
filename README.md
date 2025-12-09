@@ -9,7 +9,7 @@
 
 **A complete AI assistant that sees, listens, and understands**
 
-[Features](#-features) • [Architecture](#-architecture) • [Core Engine](#-core-engine) • [Getting Started](#-getting-started) • [Roadmap](#-development-roadmap) • [Documentation](#-documentation)
+[Features](#features) • [Architecture](#architecture) • [Core Engine](#core-engine) • [Getting Started](#getting-started) • [Roadmap](#development-roadmap) • [Documentation](#documentation)
 
 </div>
 
@@ -634,8 +634,8 @@ See [PRODUCT_DESCRIPTION.md](PRODUCT_DESCRIPTION.md) for Phase 5 accessibility f
 - **[PRODUCT_DESCRIPTION.md](PRODUCT_DESCRIPTION.md)** - Complete feature list & roadmap
 - **[TESTING.md](TESTING.md)** - Testing guide & test cases
 - **[SNOWFLAKE_FEATURES_OVERVIEW.md](SNOWFLAKE_FEATURES_OVERVIEW.md)** - Feature breakdown
-- **[Architecture Overview](#-architecture)** - Technical design
-- **[API Documentation](#-api--integrations)** - API reference
+- **[Architecture Overview](#architecture)** - Technical design
+- **[API Documentation](#api--integrations)** - API reference
 
 ---
 
@@ -1041,9 +1041,9 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 
 ### Get Help
 
-- **Issues:** [GitHub Issues](https://github.com/ShauryaPratapSingh070408/Snowflake/issues)
+- **Issues:** [GitHub Issues](https://github.com/ShauryaPratapSingh070408/Snowflake/issues) – Report bugs here or email shaurya070408@gmail.com
 - **Discussions:** [GitHub Discussions](https://github.com/ShauryaPratapSingh070408/Snowflake/discussions)
-- **Email:** shauryasingh@snowflake.ai (Coming soon)
+- **Email:** shaurya070408@gmail.com
 
 ### Connect
 
@@ -1072,6 +1072,6 @@ If you find Snowflake AI helpful, please give it a ⭐ on GitHub!
 
 *Making AI accessible, private, and helpful for everyone*
 
-[⬆ back to top](#-snowflake-ai---your-personal-ai-assistant)
+[⬆ back to top](#snowflake-ai---your-personal-ai-assistant)
 
 </div>
